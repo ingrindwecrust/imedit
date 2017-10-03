@@ -4,6 +4,9 @@
 #include <QMenuBar>
 #include <QStatusBar>
 
+#include <QMessageBox>
+#include <QFileDialog>
+
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
 	QAction *niib = new QAction("&New", this);
@@ -39,13 +42,25 @@ void MainWindow::onNew()
 
 void MainWindow::onOpen()
 {
+/*	QString name = QFileDialog::getOpenFileName(this, tr("Which file shall be opened ?"));
+	emit MainWindow::opened(name);*/
 }
 
 void MainWindow::onSave()
 {
+/*	QString name = QFileDialog::getOpenFileName(this, tr("In what file shall we save ?"));
+	emit MainWindow::saved(name);*/
 }
 
 void MainWindow::onQuit()
 {
-	qApp->quit();
+	QMessageBox yesno;
+
+	yesno.setText("So I herd u liek kuiting.");
+	yesno.setInformativeText("Do you really want to quit ?");
+	yesno.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+	yesno.setDefaultButton(QMessageBox::Yes);
+
+	if (yesno.exec() == QMessageBox::Yes)
+		qApp->quit();
 }
