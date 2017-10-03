@@ -7,11 +7,11 @@
 MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 {
 	QAction *niib = new QAction("&New", this);
-//	niib->setShortcut(tr("CTRL+N"));
+	niib->setShortcut(tr("CTRL+N"));
 	QAction *open = new QAction("&Open", this);
-//	open->setShortcut(tr("CTRL+O"));
+	open->setShortcut(tr("CTRL+O"));
 	QAction *save = new QAction("&Save", this);
-//	save->setShortcut(tr("CTRL+S"));
+	save->setShortcut(tr("CTRL+S"));
 	QAction *quit = new QAction("&Quit", this);
 	quit->setShortcut(tr("CTRL+Q"));
 
@@ -27,8 +27,25 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 
 	statusBar()->showMessage("Ready");
 
-//	connect(open, &QAction::triggered, , );
-//	connect(open, &QAction::triggered, , );
-//	connect(save, &QAction::triggered, , );
-	connect(quit, &QAction::triggered, qApp, QApplication::quit);
+	connect(niib, &QAction::triggered, this, &MainWindow::onNew);
+	connect(open, &QAction::triggered, this, &MainWindow::onOpen);
+	connect(save, &QAction::triggered, this, &MainWindow::onSave);
+	connect(quit, &QAction::triggered, this, &MainWindow::onQuit);
+}
+
+void MainWindow::onNew()
+{
+}
+
+void MainWindow::onOpen()
+{
+}
+
+void MainWindow::onSave()
+{
+}
+
+void MainWindow::onQuit()
+{
+	qApp->quit();
 }

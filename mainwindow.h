@@ -12,8 +12,8 @@ public:
 
 public slots:
 	void onNew();
-	void onOpen(const QString &filename);
-	void onSave(const QString &filename);
+	void onOpen();
+	void onSave();
 	void onQuit();
 
 signals:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QPixmap>
+#include <QWidget>
 
 class PaintSurface: public QWidget
 {
