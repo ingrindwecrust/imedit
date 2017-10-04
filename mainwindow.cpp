@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
+MainWindow::MainWindow(const QString &filename, QWidget *parent): QMainWindow(parent), m_filename(filename)
 {
 	QAction *niib = new QAction("&New", this);
 	niib->setShortcut(tr("CTRL+N"));
@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 	open->setShortcut(tr("CTRL+O"));
 	QAction *save = new QAction("&Save", this);
 	save->setShortcut(tr("CTRL+S"));
+	QAction *saveas = new QAction("&Save As", this);
 	QAction *quit = new QAction("&Quit", this);
 	quit->setShortcut(tr("CTRL+Q"));
 
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 		file->addAction(niib);
 		file->addAction(open);
 		file->addAction(save);
+		file->addAction(saveas);
 		file->addSeparator();
 		file->addAction(quit);
 	}
@@ -33,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent): QMainWindow(parent)
 	connect(niib, &QAction::triggered, this, &MainWindow::onNew);
 	connect(open, &QAction::triggered, this, &MainWindow::onOpen);
 	connect(save, &QAction::triggered, this, &MainWindow::onSave);
+	connect(saveas, &QAction::triggered, this, &MainWindow::onSaveAs);
 	connect(quit, &QAction::triggered, this, &MainWindow::onQuit);
 }
 
@@ -42,14 +45,32 @@ void MainWindow::onNew()
 
 void MainWindow::onOpen()
 {
-/*	QString name = QFileDialog::getOpenFileName(this, tr("Which file shall be opened ?"));
-	emit MainWindow::opened(name);*/
+	QString name = QFileDialog::getOpenFileName(this, tr("Which file shall be opened ?"));
+
+	if (!name.isEmpty())
+	{
+		m_filename = name;
+		emit MainWindow::opened(m_filename);
+	}
 }
 
 void MainWindow::onSave()
 {
-/*	QString name = QFileDialog::getOpenFileName(this, tr("In what file shall we save ?"));
-	emit MainWindow::saved(name);*/
+	if (m_filename.isEmpty())
+		m_filename = QFileDialog::getOpenFileName(this, tr("In what file shall we save ?"));
+	if (!m_filename.isEmpty())
+		emit MainWindow::saved(m_filename);
+}
+
+void MainWindow::onSaveAs()
+{
+	QString name = QFileDialog::getOpenFileName(this, tr("In what file shall we save ?"));
+
+	if (!name.isEmpty())
+	{
+		m_filename = name;
+		emit MainWindow::saved(m_filename);
+	}
 }
 
 void MainWindow::onQuit()
