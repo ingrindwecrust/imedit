@@ -3,6 +3,8 @@
 #include <QMainWindow>
 #include <QApplication>
 
+#include "paintsurface.h"
+
 class MainWindow: public QMainWindow
 {
 	Q_OBJECT
@@ -24,4 +26,6 @@ signals:
 
 private:
 	QString m_filename;
+
+	PaintSurface *m_paintsurface;
 };

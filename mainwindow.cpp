@@ -7,7 +7,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
-MainWindow::MainWindow(const QString &filename, QWidget *parent): QMainWindow(parent), m_filename(filename)
+MainWindow::MainWindow(const QString &filename, QWidget *parent): QMainWindow(parent), m_filename(filename), m_paintsurface(new PaintSurface(this))
 {
 	QAction *niib = new QAction("&New", this);
 	niib->setShortcut(tr("CTRL+N"));
@@ -30,17 +30,26 @@ MainWindow::MainWindow(const QString &filename, QWidget *parent): QMainWindow(pa
 		file->addAction(quit);
 	}
 
-	statusBar()->showMessage("Ready");
+	statusBar()->showMessage("Idle");
 
 	connect(niib, &QAction::triggered, this, &MainWindow::onNew);
 	connect(open, &QAction::triggered, this, &MainWindow::onOpen);
 	connect(save, &QAction::triggered, this, &MainWindow::onSave);
 	connect(saveas, &QAction::triggered, this, &MainWindow::onSaveAs);
 	connect(quit, &QAction::triggered, this, &MainWindow::onQuit);
+
+	connect(this, &MainWindow::created, m_paintsurface, &PaintSurface::onNew);
+	connect(this, &MainWindow::opened, m_paintsurface, &PaintSurface::onLoad);
+	connect(this, &MainWindow::saved, m_paintsurface, &PaintSurface::onSave);
+
+//	TODO: messages in status bar
+	connect(m_paintsurface, &PaintSurface::done, statusBar(), &QStatusBar::showMessage);
+	connect(m_paintsurface, &PaintSurface::clicked, statusBar(), &QStatusBar::clearMessage);
 }
 
 void MainWindow::onNew()
 {
+//	TODO: create dialog box to ask for dimensions
 }
 
 void MainWindow::onOpen()
