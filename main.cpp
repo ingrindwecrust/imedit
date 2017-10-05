@@ -12,12 +12,14 @@ int main(int argc, char *argv[])
 {
 	QApplication app(argc, argv);
 
-	const auto args = app.arguments();
 	QString infile;
-	if (args.count() == 2)
-		infile = args.at(1);
-	else if (args.count() > 2)
-		return usage();
+	{
+		const auto args = app.arguments();
+		if (args.count() == 2)
+			infile = args.at(1);
+		else if (args.count() > 2)
+			return usage();
+	}
 
 	MainWindow window(infile);
 	window.resize(666, 666);
